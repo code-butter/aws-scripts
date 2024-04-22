@@ -1,0 +1,45 @@
+#!/bin/env bash
+
+select_profile() {
+    profile_name=$1
+    if aws configure list-profiles | grep -q "^$profile_name$"; then
+        echo "export AWS_PROFILE=\"$profile_name\""
+        echo "Switched to AWS profile: $profile_name" >&2
+    else
+        echo "Profile '$profile_name' does not exist." >&2
+    fi
+}
+
+help() {
+  echo "Usage: aws-profile <list|select> [profile-name]" >&2
+}
+
+case "$1" in
+    list)
+        echo "Available AWS Profiles:" >&2
+        aws configure list-profiles >&2
+        ;;
+    select)
+        if [ $# -lt 2 ]; then
+            readarray -t lines < <(aws configure list-profiles)
+            json_array='['
+            first=1
+            for line in "${lines[@]}"; do
+                if [ "$first" -eq "1" ]; then
+                  first=0
+                else
+                  json_array+=','
+                fi
+                json_array+="{\"label\":\"$line\",\"value\":\"$line\"}"
+            done
+            json_array+=']'
+            result=$(SELEKTOR_OPTIONS="$json_array" selektor)
+            select_profile "$result"
+        else
+            select_profile "$2"
+        fi
+        ;;
+    *)
+        help
+        ;;
+esac
