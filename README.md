@@ -4,7 +4,7 @@ Shell scripts to make dealing with common AWS tasks easier. You will need a bash
 ## General Setup
 
 * Clone this repo. Make note of where you saved it for later steps.
-* Download selektor and put in your $PATH
+* Download [selektor](https://github.com/code-butter/selektor) and put in your $PATH
 
 # Scripts
 
