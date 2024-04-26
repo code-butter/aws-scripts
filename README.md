@@ -16,7 +16,7 @@ In a shell profile, put the following code:
 
 ```
 aws-profile() {
-    src=$(/path/to/aws-scripts/aws-profile "$@")
+    src=$(/path/to/aws-scripts/aws-profile.sh "$@")
     eval "$src"   
 }
 ```
@@ -28,5 +28,7 @@ File locations for shells:
 
 ### Arguments
 
-You can pass `list` or `select`. If you pass an additional argument to `select` it will select that profile for you. If
-you do not, the script will pop up with available profiles.
+* `list` Lists all available CLI profiles
+* `select` Select a profile. You can provide an additional argument to select an existing profile. If you omit this, it
+    uses selektor to show options in a UI. 
+* `login` Use AWS SSO to log into an existing profile. It behaves similarly to `select` 
